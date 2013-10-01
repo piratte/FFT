@@ -1,0 +1,54 @@
+Pro n=4 je jedno, jestli se primit komplexne sdruzuje
+
+
+========================================================== VERZE BEZ POLYNOM::PROHOD() =====================================================================================================================
+
+polynom preFourier(const polynom & p) 
+{
+	//vytvorime si kopii polynomu a s ni budeme pracovat
+	polynom novy(p);
+	
+	//nyni si vytvorime spravnou primitivni odmocninu z 1
+	complex primit(primitZJedni(novy.velikost()));
+	if (p.vratTvar() == graf)
+	{
+		//primit.sdruzene();
+
+		novy.prohod();
+		/*
+		for (int i = 0; i < novy.velikost(); i++)
+		{
+			
+			typ tmp(novy.at(i).img);
+			novy.at(i).img = novy.at(i).rel;
+			novy.at(i).rel = tmp;
+		}
+		*/
+	}
+
+	//a vratime polynom, ktery je vysledkem FFT (pozor na vraceni odkazem, mozna budes muset zmenit predavani do FFT pomoci odkazu !!!!!!!!!! )
+	polynom out(fourier(novy.velikost(), primit, novy));
+
+	//zde se rozhoduje, jestli je to inverze nebo ne. if se pta na tvar repre, se kterym polynom vstupoval do funkce, fce fourier nemeni tvar repre
+	size_t n(out.velikost());
+
+	if (out.vratTvar() == graf)
+	{
+		out *= 1/pow(n,1);
+
+		out.prohod();
+		/*for (int i = 0; i < out.velikost(); i++)
+		{
+			
+			typ tmp(out.at(i).img);
+			out.at(i).img = out.at(i).rel;
+			out.at(i).rel = tmp;
+		}*/
+	}
+
+	out.zmenTvar();
+
+	return out;
+}
+
+====================================================================================================================================================================================================================
